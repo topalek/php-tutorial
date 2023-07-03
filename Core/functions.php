@@ -58,3 +58,8 @@ function view($view, $params = [])
     extract($params);
     require base_path('views/' . $view . '.php');
 }
+
+function isRoute($route): bool
+{
+    return parse_url($_SERVER['REQUEST_URI'])['path'] === $route;
+}

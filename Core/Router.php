@@ -5,82 +5,58 @@ class Router
 {
     private $routes = [];
 
-    public function get($uri, $controller)
+    private function add($method, $uri, $controller): void
     {
         $this->routes[] = [
             'uri'        => $uri,
             'controller' => $controller,
-            'method'     => 'GET',
+            'method'     => $method,
         ];
     }
 
-    public function post($uri, $controller)
+    public function get($uri, $controller): void
     {
-        $this->routes[] = [
-            'uri'        => $uri,
-            'controller' => $controller,
-            'method'     => 'POST',
-        ];
+        $this->add('GET', $uri, $controller);
     }
 
-    public function delete($uri, $controller)
+    public function post($uri, $controller): void
     {
-        $this->routes[] = [
-            'uri'        => $uri,
-            'controller' => $controller,
-            'method'     => 'DELETE',
-        ];
+        $this->add('POST', $uri, $controller);
     }
 
-    public function patch($uri, $controller)
+    public function delete($uri, $controller): void
     {
-        $this->routes[] = [
-            'uri'        => $uri,
-            'controller' => $controller,
-            'method'     => 'PATCH',
-        ];
+        $this->add('DELETE', $uri, $controller);
     }
 
-    public function put($uri, $controller)
+    public function patch($uri, $controller): void
     {
-        $this->routes[] = [
-            'uri'        => $uri,
-            'controller' => $controller,
-            'method'     => 'PUT',
-        ];
+        $this->add('PATCH', $uri, $controller);
     }
 
-    public function route($uri)
+    public function put($uri, $controller): void
     {
+        $this->add('PUT', $uri, $controller);
+    }
 
+    public function route($uri, $method)
+    {
+        foreach ($this->routes as $route) {
+            if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
+                return require base_path($route['controller']);
+            }
+        }
+
+        $this->abort();
+    }
+
+    protected function abort($statusCode = 404)
+    {
+        http_response_code($statusCode);
+        view("error", [
+            'statusCode' => $statusCode
+        ]);
+        die;
     }
 
 }
-
-
-function isRoute($route): bool
-{
-    return parse_url($_SERVER['REQUEST_URI'])['path'] === $route;
-}
-
-function abort($statusCode = 404)
-{
-    http_response_code($statusCode);
-    view("error", [
-        'statusCode' => $statusCode
-    ]);
-    die;
-}
-
-function routeToController($uri, $routes)
-{
-    if (array_key_exists($uri, $routes)) {
-        require base_path($routes[$uri]);
-    } else {
-        abort();
-    }
-}
-
-
-
-routeToController($path, $routes);
