@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)){
         $db->query('insert into notes (title,content,user_id) values (:title,:content,:user_id)', ['title' => $_POST['title'], 'content' => $_POST['content'], 'user_id' => 1]);
+        header('location: /notes');
+        exit();
     }
 }
 
