@@ -1,11 +1,11 @@
 <?php
 
 
+use Core\App;
 use Core\Db;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $config = require base_path('config/db.php');
-    $db = new Db($config);
+    $db = App::get(Db::class);
     $errors = [];
     if (strlen($_POST['title']) === 0) {
         $errors['title'] = 'A title is required';

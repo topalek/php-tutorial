@@ -1,10 +1,10 @@
 <?php
 
 
+use Core\App;
 use Core\Db;
 
-$config = require base_path('config/db.php');
-$db = new Db($config);
+$db = App::get(Db::class);
 
 $notes = $db->query('select * from notes where user_id=1')->getOrFail();
 view('notes/index', ['title' => 'Notes page', 'notes' => $notes]);
