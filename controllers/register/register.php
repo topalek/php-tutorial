@@ -5,7 +5,7 @@ use Core\Db;
 use Core\Validator;
 
 extract($_POST);
-
+/**@var Db $db */
 $db = App::get(Db::class);
 $errors = [];
 if (!Validator::email($email)) {
@@ -35,8 +35,9 @@ if ($user) {
         'name' => $name,
         'password' => password_hash($password, PASSWORD_BCRYPT),
     ]);
-    $_SESSION['user'] = ['email' => $email,
-                         'name'  => $name,];
+    $user = $db->query('select email,name from users where email=:email', ['email' => $email])->find();
+    login($user);
+
 
     redirect('/');
 }

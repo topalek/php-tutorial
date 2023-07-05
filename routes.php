@@ -18,4 +18,4 @@ $router->post('/register', 'controllers/register/register.php');
 $router->get('/login', 'controllers/login/index.php');
 $router->post('/login', 'controllers/login/login.php');
 
-$router->get('/logout', 'controllers/logout.php');
+$router->delete('/logout', 'controllers/logout.php');

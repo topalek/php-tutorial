@@ -48,13 +48,16 @@
                             <!-- Active: "bg-gray-100", Not Active: "" -->
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                            <form action="/logout" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button class="block px-4 py-2 text-sm text-gray-700" >Logout</button>
+                            </form>
                         </div>
                     </div>
                     <?php else: ?>
                     <div class="flex gap-2">
-                        <a href="/register" class="text-gray-400 hover:text-white">Register</a>
-                        <a href="/login" class="text-gray-400 hover:text-white">Login</a>
+                        <a href="/register" class="<?= isRoute('/register')?'bg-gray-900 text-white':'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Register</a>
+                        <a href="/login" class="<?= isRoute('/login')?'bg-gray-900 text-white':'text-gray-300 hover:bg-gray-700 hover:text-white' ?> rounded-md px-3 py-2 text-sm font-medium">Login</a>
                     </div>
 
                     <?php endif; ?>
@@ -111,3 +114,18 @@
         </div>
     </div>
 </nav>
+<script defer>
+    let id = 'user-menu-button'
+    let dropdown = document.getElementById(id)
+    if (dropdown){
+        dropdown.addEventListener('click',toggleDropdown)
+    }
+    function toggleDropdown(){
+        let dropdown = document.querySelector('[aria-labelledby="user-menu-button"]')
+        if (dropdown){
+            dropdown.classList.toggle('transform')
+            dropdown.classList.toggle('opacity-0')
+            dropdown.classList.toggle('scale-95')
+        }
+    }
+</script>
