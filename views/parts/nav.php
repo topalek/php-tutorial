@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="hidden md:block">
-                <div class="ml-4 flex items-center md:ml-6">
+                <div class="ml-4 flex gap-3 items-center md:ml-6">
                     <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span class="sr-only">View notifications</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -24,6 +24,7 @@
                         </svg>
                     </button>
 
+                    <?php if ($_SESSION['user']??false): ?>
                     <!-- Profile dropdown -->
                     <div class="relative ml-3">
                         <div>
@@ -50,6 +51,13 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                         </div>
                     </div>
+                    <?php else: ?>
+                    <div class="flex gap-2">
+                        <a href="/register" class="text-gray-400 hover:text-white">Register</a>
+                        <a href="/login" class="text-gray-400 hover:text-white">Login</a>
+                    </div>
+
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="-mr-2 flex md:hidden">

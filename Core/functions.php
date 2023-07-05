@@ -63,3 +63,9 @@ function isRoute($route): bool
 {
     return parse_url($_SERVER['REQUEST_URI'])['path'] === $route;
 }
+
+function redirect($route)
+{
+    header('location: ' . $route);
+    exit;
+}
