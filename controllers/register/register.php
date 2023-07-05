@@ -31,9 +31,9 @@ if ($user) {
     redirect('/login');
 } else {
     $db->query('insert into users (email,name,password) values (:email,:name,:password)', [
-        'email'    => $email,
-        'name'     => $name,
-        'password' => $password,
+        'email' => $email,
+        'name' => $name,
+        'password' => password_hash($password, PASSWORD_BCRYPT),
     ]);
     $_SESSION['user'] = ['email' => $email,
                          'name'  => $name,];
