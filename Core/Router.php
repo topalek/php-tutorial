@@ -60,7 +60,7 @@ class Router
                 }
 
 
-                return require base_path($route['controller']);
+                return require base_path('Http/controllers/'.$route['controller']);
             }
         }
 

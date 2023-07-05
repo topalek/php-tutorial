@@ -3,6 +3,7 @@
 use Core\App;
 use Core\Db;
 use Core\Validator;
+use Http\Forms\LoginForm;
 
 /**
  * @var string $password
@@ -14,25 +15,13 @@ $db = App::get(Db::class);
 $errors = [];
 
 $user = $db->query('select * from users where email=:email', ['email' => $email])->find();
-if (!$user) {
-    $errors['email'] = 'No matching account for this email';
-}
-if (!Validator::email($email)) {
-    $errors['email'] = 'Provide a valid email';
-}
-if (!Validator::required($email, 1, 255)) {
-    $errors['email'] = 'Field is required';
-}
+$form = new LoginForm();
 
-if (!Validator::required($password)) {
-    $errors['password'] = 'Field is required';
-}
-
-
-if (count($errors)) {
-    view('login/index', ['errors' => $errors]);
+if($form->validate($email,$password)){
+    view('login/index', ['errors' => $form->errors()]);
     exit;
 }
+
 if (password_verify($password, $user['password'])) {
     unset($user['password']);
     login($user);
