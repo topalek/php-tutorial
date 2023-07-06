@@ -60,11 +60,16 @@ class Router
                 }
 
 
-                return require base_path('Http/controllers/'.$route['controller']);
+                return require base_path('Http/controllers/' . $route['controller']);
             }
         }
 
         $this->abort();
+    }
+
+    public function previousUrl()
+    {
+        return $_SERVER['HTTP_REFERER'];
     }
 
     protected function abort($statusCode = 404)
