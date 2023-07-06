@@ -1,6 +1,7 @@
 <?php
 
 use Core\Auth;
+use Core\Session;
 use Http\Forms\LoginForm;
 
 /**
@@ -20,6 +21,5 @@ if ($form->validate($email, $password)) {
     }
     $form->error('email', 'No matching account for this email & password');
 }
-
-return view('login/index', ['errors' => $form->errors()]);
-
+Session::flash('errors', $form->errors());
+redirect('/login');
