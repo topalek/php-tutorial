@@ -1,8 +1,6 @@
 <?php
 
-use Core\App;
-use Core\Db;
-use Core\Validator;
+use Core\Auth;
 use Http\Forms\LoginForm;
 
 /**
@@ -11,23 +9,17 @@ use Http\Forms\LoginForm;
  */
 extract($_POST);
 
-$db = App::get(Db::class);
 $errors = [];
 
-$user = $db->query('select * from users where email=:email', ['email' => $email])->find();
 $form = new LoginForm();
 
-if($form->validate($email,$password)){
-    view('login/index', ['errors' => $form->errors()]);
-    exit;
+if ($form->validate($email, $password)) {
+
+    if (Auth::attempt($email, $password)) {
+        redirect('/');
+    }
+    $form->error('email', 'No matching account for this email & password');
 }
 
-if (password_verify($password, $user['password'])) {
-    unset($user['password']);
-    login($user);
-    redirect('/');
-} else {
-    view('login/index', ['errors' => ['email' => 'No matching account for this email & password']]);
-    exit;
-}
+return view('login/index', ['errors' => $form->errors()]);
 
